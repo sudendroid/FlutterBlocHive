@@ -39,9 +39,9 @@ class _AddProductState extends State<AddProduct> {
                   return null;
                 },
               ),
-
-              SizedBox(height: 20,),
-
+              SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
@@ -57,19 +57,39 @@ class _AddProductState extends State<AddProduct> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Validate returns true if the form is valid, or false
-                    // otherwise.
-                    if (_formKey.currentState.validate()) {
-                      // If the form is valid, display a Snackbar.
-                      Product p = Product(nameController.text,
-                          double.parse(priceController.text));
-                      BlocProvider.of<ProductCubit>(context).addProduct(p);
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: Text('Add Product'),
+                child: Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        // Validate returns true if the form is valid, or false
+                        // otherwise.
+                        if (_formKey.currentState.validate()) {
+                          // If the form is valid, display a Snackbar.
+                          Product p = Product(nameController.text,
+                              double.parse(priceController.text));
+                          BlocProvider.of<ProductCubit>(context).addProduct(p);
+                          _formKey.currentState.reset();
+                        }
+                      },
+                      child: Text('Add Product'),
+                    ),
+                    SizedBox(width: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Validate returns true if the form is valid, or false
+                        // otherwise.
+                        if (_formKey.currentState.validate()) {
+                          // If the form is valid, display a Snackbar.
+                          Product p = Product(nameController.text,
+                              double.parse(priceController.text));
+                          BlocProvider.of<ProductCubit>(context).addProduct(p);
+                          _formKey.currentState.reset();
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: Text('Add Product And Done'),
+                    ),
+                  ],
                 ),
               ),
             ],

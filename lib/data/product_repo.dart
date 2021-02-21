@@ -1,10 +1,7 @@
 import 'package:psi/models/product.dart';
 
 class ProductRepository {
-  List<Product> _pList = [
-    Product('apple', 22.0),
-    Product('mango', 24.0),
-  ];
+  List<Product> _pList = [];
 
   Future<List<Product>> getProducts() async {
     return _pList;
@@ -16,5 +13,9 @@ class ProductRepository {
 
   void removeProduct(int id) {
     _pList.removeAt(id);
+  }
+
+  void removeAllProducts() {
+    _pList.clear();
   }
 }

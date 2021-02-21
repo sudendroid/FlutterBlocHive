@@ -18,7 +18,7 @@ class _ProductListState extends State<ProductList> {
     super.initState();
   }
 
-  void fetchProducts(dynamic data){
+  void fetchProducts(dynamic data) {
     BlocProvider.of<ProductCubit>(context).getProducts();
   }
 
@@ -40,7 +40,14 @@ class _ProductListState extends State<ProductList> {
             ListTile(
               title: Text('Add Product'),
               onTap: () {
-                Navigator.popAndPushNamed(context, AddProduct.ROUTE).then(fetchProducts);
+                Navigator.popAndPushNamed(context, AddProduct.ROUTE);
+              },
+            ),
+            ListTile(
+              title: Text('Delete All Products'),
+              onTap: () {
+                BlocProvider.of<ProductCubit>(context).removeAllProducts();
+                Navigator.pop(context);
               },
             ),
             ListTile(
@@ -74,12 +81,27 @@ class _ProductListState extends State<ProductList> {
 
   Widget _buildInitialView() {
     return Center(
-      child: RaisedButton(
-        onPressed: () {
-          Product p = Product('Dummy', 22.0);
-          BlocProvider.of<ProductCubit>(context).addProduct(p);
-        },
-        child: const Text('Add Product', style: TextStyle(fontSize: 20)),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'No products added yet!',
+            style: TextStyle(fontSize: 18),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          RaisedButton.icon(
+            onPressed: () {
+              Navigator.pushNamed(context, AddProduct.ROUTE);
+            },
+            icon: Icon(Icons.add),
+            label: const Text(
+              'Add Product',
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -97,10 +119,11 @@ class _ProductListState extends State<ProductList> {
         itemBuilder: (context, index) {
           return ListTile(
             title: Text(products[index].productName),
+            subtitle: Text('₹ ${products[index].price}'),
           );
         },
       );
-    }else{
+    } else {
       return _buildInitialView();
     }
   }

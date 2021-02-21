@@ -13,22 +13,23 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-          primarySwatch: Colors.pink,
-          visualDensity: VisualDensity.adaptivePlatformDensity),
-      initialRoute: SplashScreen.ROUTE,
-      routes: {
-        SplashScreen.ROUTE: (context) => SplashScreen(),
-        ProductList.ROUTE: (context) => BlocProvider(
-              create: (context) => ProductCubit(ProductRepository()),
-              child: ProductList(),
-            ),
-        AddProduct.ROUTE: (context) => BlocProvider(
-              create: (context) => ProductCubit(ProductRepository()),
-              child: AddProduct(),
-            ),
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ProductCubit>(
+          create: (BuildContext context) => ProductCubit(ProductRepository()),
+        ),
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+            primarySwatch: Colors.pink,
+            visualDensity: VisualDensity.adaptivePlatformDensity),
+        initialRoute: SplashScreen.ROUTE,
+        routes: {
+          SplashScreen.ROUTE: (context) => SplashScreen(),
+          ProductList.ROUTE: (context) => ProductList(),
+          AddProduct.ROUTE: (context) => AddProduct(),
+        },
+      ),
     );
   }
 }

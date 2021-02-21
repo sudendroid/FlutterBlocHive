@@ -28,4 +28,10 @@ class ProductCubit extends Cubit<ProductState> {
     List<Product> pList = await productRepository.getProducts();
     emit(ProductLoaded(pList));
   }
+
+  void removeAllProducts() async{
+    productRepository.removeAllProducts();
+    List<Product> pList = await productRepository.getProducts();
+    emit(ProductLoaded(pList));
+  }
 }
