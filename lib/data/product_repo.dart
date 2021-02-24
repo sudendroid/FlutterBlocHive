@@ -1,21 +1,26 @@
+import 'package:hive/hive.dart';
 import 'package:psi/models/product.dart';
 
 class ProductRepository {
-  List<Product> _pList = [];
-
-  Future<List<Product>> getProducts() async {
-    return _pList;
+  static const productBox = 'productBox';
+  
+  ProductRepository() {
+    // await Hive.openBox<Product>(productBox);
   }
 
-  void addProduct(Product p) {
-    _pList.add(p);
+  Future<List<Product>> getProducts() async {    
+    return Hive.box<Product>(productBox).values.toList();
+  }
+
+  Future<void> addProduct(Product p) async {
+    // p.save();
+    Hive.box<Product>(productBox).add(p);
   }
 
   void removeProduct(int id) {
-    _pList.removeAt(id);
   }
 
-  void removeAllProducts() {
-    _pList.clear();
+  Future<void> removeAllProducts() async {
+    await Hive.box<Product>(productBox).clear();
   }
 }

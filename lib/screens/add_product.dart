@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:psi/cubit/product_cubit.dart';
+import 'package:psi/models/measurement_units.dart';
 import 'package:psi/models/product.dart';
 
 class AddProduct extends StatefulWidget {
@@ -14,6 +15,7 @@ class _AddProductState extends State<AddProduct> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
+  MeasurementUnit unit;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class _AddProductState extends State<AddProduct> {
                 controller: nameController,
                 validator: (value) {
                   if (value.isEmpty) {
-                    return 'Please enter product name';
+                    return 'please enter product name';
                   }
                   return null;
                 },
@@ -50,7 +52,31 @@ class _AddProductState extends State<AddProduct> {
                 controller: priceController,
                 validator: (value) {
                   if (value.isEmpty) {
-                    return 'Please enter price';
+                    return 'please enter price';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              DropdownButtonFormField(
+                items: measurementUnits.keys.map((MeasurementUnit value) {
+                  return DropdownMenuItem<MeasurementUnit>(
+                    value: value,
+                    child: Text(measurementUnits[value]),
+                  );
+                }).toList(),
+                hint: Text("Select measure unit"),
+                onChanged: (value) {
+                  unit = value;
+                },
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value){
+                  if(value==null){
+                    return "please select unit";
                   }
                   return null;
                 },
@@ -66,7 +92,7 @@ class _AddProductState extends State<AddProduct> {
                         if (_formKey.currentState.validate()) {
                           // If the form is valid, display a Snackbar.
                           Product p = Product(nameController.text,
-                              double.parse(priceController.text));
+                              double.parse(priceController.text), unit);
                           BlocProvider.of<ProductCubit>(context).addProduct(p);
                           _formKey.currentState.reset();
                         }
@@ -81,7 +107,7 @@ class _AddProductState extends State<AddProduct> {
                         if (_formKey.currentState.validate()) {
                           // If the form is valid, display a Snackbar.
                           Product p = Product(nameController.text,
-                              double.parse(priceController.text));
+                              double.parse(priceController.text),unit);
                           BlocProvider.of<ProductCubit>(context).addProduct(p);
                           _formKey.currentState.reset();
                           Navigator.pop(context);

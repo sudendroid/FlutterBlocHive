@@ -91,7 +91,7 @@ class _ProductListState extends State<ProductList> {
           SizedBox(
             height: 20,
           ),
-          RaisedButton.icon(
+          ElevatedButton.icon(
             onPressed: () {
               Navigator.pushNamed(context, AddProduct.ROUTE);
             },
@@ -119,7 +119,8 @@ class _ProductListState extends State<ProductList> {
         itemBuilder: (context, index) {
           return ListTile(
             title: Text(products[index].productName),
-            subtitle: Text('₹ ${products[index].price}'),
+            subtitle:
+                Text('₹ ${products[index].price}/${products[index].unitName}'),
           );
         },
       );
