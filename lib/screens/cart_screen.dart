@@ -29,10 +29,7 @@ class _CartScreenState extends State<CartScreen> {
     return BlocConsumer<CartCubit, CartState>(
       listener: (context, state) {
         if (state is OrderPlaced) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("Thank you for placing order"),
-          ));
-          Navigator.pop(context);
+          showThankOnOrderPlaced();
         }
       },
       builder: (context, state) {
@@ -146,11 +143,34 @@ class _CartScreenState extends State<CartScreen> {
     }
   }
 
+  void showThankOnOrderPlaced() {
+    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //   content: Text("Thank you for placing order"),
+    // ));
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Text("Thank you for placing order!"),
+            actions: [
+              ElevatedButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   void fetchCartItems() {
     BlocProvider.of<CartCubit>(context).getCartProducts();
   }
 
-  void saveOrder(){
+  void saveOrder() {
     BlocProvider.of<CartCubit>(context).saveOrder();
   }
 
