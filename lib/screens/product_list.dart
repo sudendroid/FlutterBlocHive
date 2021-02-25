@@ -114,15 +114,36 @@ class _ProductListState extends State<ProductList> {
 
   Widget _buildLoadedView(List<Product> products) {
     if (products.length > 0) {
-      return ListView.builder(
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(products[index].productName),
-            subtitle:
-                Text('₹ ${products[index].price}/${products[index].unitName}'),
-          );
-        },
+      return Column(
+        children: [
+          Expanded(
+            child: ListView.separated(
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: CircleAvatar(
+                      child: Image.network(products[index].imageUrl)),
+                  title: Text(products[index].productName),
+                  subtitle: Text(
+                      '₹ ${products[index].price}/${products[index].unitName}'),
+                  trailing: ElevatedButton(
+                    onPressed: () {},
+                    child: Text("Add to cart"),
+                  ),
+                );
+              },
+              separatorBuilder: (context, index) {
+                return Divider();
+              },
+            ),
+          ),
+          Container(
+              width: double.infinity,
+              child: ElevatedButton(
+                child: Text("Checkout"),
+                onPressed: () {},
+              )),
+        ],
       );
     } else {
       return _buildInitialView();

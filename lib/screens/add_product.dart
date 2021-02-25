@@ -93,7 +93,7 @@ class _AddProductState extends State<AddProduct> {
                           // If the form is valid, display a Snackbar.
                           Product p = Product(nameController.text,
                               double.parse(priceController.text), unit);
-                          BlocProvider.of<ProductCubit>(context).addProduct(p);
+                          addProductToDB(p);
                           _formKey.currentState.reset();
                         }
                       },
@@ -108,7 +108,7 @@ class _AddProductState extends State<AddProduct> {
                           // If the form is valid, display a Snackbar.
                           Product p = Product(nameController.text,
                               double.parse(priceController.text),unit);
-                          BlocProvider.of<ProductCubit>(context).addProduct(p);
+                          addProductToDB(p);
                           _formKey.currentState.reset();
                           Navigator.pop(context);
                         }
@@ -124,4 +124,10 @@ class _AddProductState extends State<AddProduct> {
       ),
     );
   }
+
+  void addProductToDB(Product p){
+    p.imageUrl = "https://media.istockphoto.com/photos/orange-picture-id185284489?k=6&m=185284489&s=612x612&w=0&h=x_w4oMnanMTQ5KtSNjSNDdiVaSrlxM4om-3PQTIzFaY=";
+    BlocProvider.of<ProductCubit>(context).addProduct(p);
+  }
+
 }
