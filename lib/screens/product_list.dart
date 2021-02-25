@@ -81,7 +81,7 @@ class _ProductListState extends State<ProductList> {
         } else if (state is ProductLoading) {
           return _buildLoadingView();
         } else if (state is ProductLoaded) {
-          return _buildLoadedView(state.products);
+          return _buildLoadedView(state.products, state.isCartEmpty);
         } else {
           return _buildInitialView();
         }
@@ -169,7 +169,21 @@ class _ProductListState extends State<ProductList> {
     }
   }
 
-  Widget _buildLoadedView(List<Product> products) {
+  Widget _buildCheckoutView(bool isCartEmpty) {
+    if (isCartEmpty) {
+      return Container();
+    }
+    return Container(
+      width: double.infinity,
+      child: ElevatedButton(
+        child: Text("Checkout"),
+        onPressed: () {},
+      ),
+    );
+  }
+
+  Widget _buildLoadedView(List<Product> products, bool isCartEmpty) {
+    
     if (products.length > 0) {
       return Column(
         children: [
@@ -191,12 +205,7 @@ class _ProductListState extends State<ProductList> {
               },
             ),
           ),
-          Container(
-              width: double.infinity,
-              child: ElevatedButton(
-                child: Text("Checkout"),
-                onPressed: () {},
-              )),
+          _buildCheckoutView(isCartEmpty),
         ],
       );
     } else {

@@ -12,15 +12,19 @@ class ProductRepository {
     return Hive.box<Product>(productBox).values.toList();
   }
 
+  Future<List<Product>> getCartItems() async {
+    return Hive.box<Product>(productBox).values.where((p) => p.qty > 0);
+  }
+
   Future<void> addProduct(Product p) async {
-    // add and save => Saves the [value] with an auto-increment key.
-    // p.save();
+    // Saves the [value] with an auto-increment key. used for first time adding 
     Hive.box<Product>(productBox).add(p);
   }
 
   Future<void> updateProduct(Product p) async {
-    // put is to update an object for certain key
-    Hive.box<Product>(productBox).put(p.key, p);
+    //save and put is to update an object for certain key
+    p.save();
+    // Hive.box<Product>(productBox).put(p.key, p);
   }
 
   void removeProduct(int id) {
@@ -29,4 +33,5 @@ class ProductRepository {
   Future<void> removeAllProducts() async {
     await Hive.box<Product>(productBox).clear();
   }
+
 }
