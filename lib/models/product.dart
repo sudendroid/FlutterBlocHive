@@ -21,5 +21,9 @@ class Product extends HiveObject {
     return measurementUnits[unit];
   }
 
+  void resetQty(){
+    this.qty = 0;
+  }
+
   Product(this.productName, this.price, this.unit, {this.imageUrl});
 }

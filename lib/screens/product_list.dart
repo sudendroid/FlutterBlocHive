@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:psi/cubit/product_cubit.dart';
 import 'package:psi/models/product.dart';
 import 'package:psi/screens/add_product.dart';
+import 'package:psi/screens/cart_screen.dart';
 
 class ProductList extends StatefulWidget {
   static const ROUTE = '/productList';
@@ -14,22 +15,8 @@ class ProductList extends StatefulWidget {
 class _ProductListState extends State<ProductList> {
   @override
   void initState() {
-    fetchProducts(null);
+    fetchProducts();
     super.initState();
-  }
-
-  void fetchProducts(dynamic data) {
-    BlocProvider.of<ProductCubit>(context).getProducts();
-  }
-
-  void addToCart(Product product) {
-    product.qty = product.qty + 1;
-    BlocProvider.of<ProductCubit>(context).updateQuantity(product);
-  }
-
-  void removeFromCart(Product product) {
-    product.qty = product.qty - 1;
-    BlocProvider.of<ProductCubit>(context).updateQuantity(product);
   }
 
   @override
@@ -177,13 +164,16 @@ class _ProductListState extends State<ProductList> {
       width: double.infinity,
       child: ElevatedButton(
         child: Text("Checkout"),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, CartScreen.ROUTE).then(
+            (value) => fetchProducts(),
+          );
+        },
       ),
     );
   }
 
   Widget _buildLoadedView(List<Product> products, bool isCartEmpty) {
-    
     if (products.length > 0) {
       return Column(
         children: [
@@ -212,4 +202,19 @@ class _ProductListState extends State<ProductList> {
       return _buildInitialView();
     }
   }
+
+  void fetchProducts() {
+    BlocProvider.of<ProductCubit>(context).getProducts();
+  }
+
+  void addToCart(Product product) {
+    product.qty = product.qty + 1;
+    BlocProvider.of<ProductCubit>(context).updateQuantity(product);
+  }
+
+  void removeFromCart(Product product) {
+    product.qty = product.qty - 1;
+    BlocProvider.of<ProductCubit>(context).updateQuantity(product);
+  }
+
 }
