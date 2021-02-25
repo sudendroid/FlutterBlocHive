@@ -22,6 +22,16 @@ class _ProductListState extends State<ProductList> {
     BlocProvider.of<ProductCubit>(context).getProducts();
   }
 
+  void addToCart(Product product) {
+    product.qty = product.qty + 1;
+    BlocProvider.of<ProductCubit>(context).updateQuantity(product);
+  }
+
+  void removeFromCart(Product product) {
+    product.qty = product.qty - 1;
+    BlocProvider.of<ProductCubit>(context).updateQuantity(product);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,6 +122,53 @@ class _ProductListState extends State<ProductList> {
     );
   }
 
+  Widget _buildAddToCardView(Product p) {
+    print('qty of ${p.productName} => ${p.qty}');
+    if (p.qty > 0) {
+      return Container(
+        width: 200,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TextButton(
+              onPressed: () {
+                removeFromCart(p);
+              },
+              child: Text("-"),
+              style: TextButton.styleFrom(
+                primary: Colors.white,
+                backgroundColor: Colors.pink,
+                onSurface: Colors.grey,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('${p.qty}'),
+            ),
+            TextButton(
+              onPressed: () {
+                addToCart(p);
+              },
+              child: Text("+"),
+              style: TextButton.styleFrom(
+                primary: Colors.white,
+                backgroundColor: Colors.pink,
+                onSurface: Colors.grey,
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return ElevatedButton(
+        onPressed: () {
+          addToCart(p);
+        },
+        child: Text("Add to cart"),
+      );
+    }
+  }
+
   Widget _buildLoadedView(List<Product> products) {
     if (products.length > 0) {
       return Column(
@@ -126,10 +183,7 @@ class _ProductListState extends State<ProductList> {
                   title: Text(products[index].productName),
                   subtitle: Text(
                       '₹ ${products[index].price}/${products[index].unitName}'),
-                  trailing: ElevatedButton(
-                    onPressed: () {},
-                    child: Text("Add to cart"),
-                  ),
+                  trailing: _buildAddToCardView(products[index]),
                 );
               },
               separatorBuilder: (context, index) {

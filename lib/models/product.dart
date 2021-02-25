@@ -14,6 +14,8 @@ class Product extends HiveObject {
   String imageUrl;
   @HiveField(3)
   MeasurementUnit unit;
+  @HiveField(4)
+  int qty = 0;
 
   String get unitName {
     return measurementUnits[unit];

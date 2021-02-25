@@ -34,4 +34,10 @@ class ProductCubit extends Cubit<ProductState> {
     List<Product> pList = await productRepository.getProducts();
     emit(ProductLoaded(pList));
   }
+
+  void updateQuantity(Product p) async{
+    await productRepository.updateProduct(p);
+    List<Product> pList = await productRepository.getProducts();
+    emit(ProductLoaded(pList));
+  }
 }
