@@ -8,4 +8,9 @@ class OrderRepository {
     // Saves the [value] with an auto-increment key. used for first time adding
     Hive.box<Order>(orderBox).add(order);
   }
+
+  Future<List<Order>> getOrders() async {
+    return Hive.box<Order>(orderBox).values.toList();
+  }
+
 }

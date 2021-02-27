@@ -5,7 +5,7 @@ import 'package:psi/models/product.dart';
 part 'order.g.dart';
 
 @HiveType(typeId:3)
-class Order{
+class Order extends HiveObject{
 
   @HiveField(0)
   List<Product> items;

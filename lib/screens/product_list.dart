@@ -4,6 +4,7 @@ import 'package:psi/cubit/product_cubit.dart';
 import 'package:psi/models/product.dart';
 import 'package:psi/screens/add_product.dart';
 import 'package:psi/screens/cart_screen.dart';
+import 'package:psi/screens/my_orders.dart';
 
 class ProductList extends StatefulWidget {
   static const ROUTE = '/productList';
@@ -33,6 +34,12 @@ class _ProductListState extends State<ProductList> {
               decoration: BoxDecoration(
                 color: Colors.pink,
               ),
+            ),
+            ListTile(
+              title: Text('My Orders'),
+              onTap: () {
+                Navigator.popAndPushNamed(context, MyOrders.ROUTE);
+              },
             ),
             ListTile(
               title: Text('Add Product'),

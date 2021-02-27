@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:psi/cubit/product_cubit.dart';
-import 'package:psi/data/order_repo.dart';
+import 'package:psi/data/orders_repo.dart';
 import 'package:psi/data/product_repo.dart';
 import 'package:psi/models/order.dart';
 import 'package:psi/models/product.dart';

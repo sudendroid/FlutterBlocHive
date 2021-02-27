@@ -83,7 +83,7 @@ class _CartScreenState extends State<CartScreen> {
       width: double.infinity,
       height: 30,
       color: Colors.green,
-      child:Center(child: Text("Final amount => $billingAmount", style:TextStyle(color: Colors.white))),
+      child:Center(child: Text("Final amount => ₹$billingAmount", style:TextStyle(color: Colors.white))),
     );
   }
 
@@ -157,7 +157,7 @@ class _CartScreenState extends State<CartScreen> {
               ],
             ),
           ),
-          Text('subtotal=> ${p.price * p.qty}'),
+          Text('subtotal=> ₹${p.price * p.qty}'),
         ],
       );
     } else {
