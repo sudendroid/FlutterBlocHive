@@ -4,8 +4,10 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:psi/cubit/cart_cubit.dart';
 import 'package:psi/cubit/product_cubit.dart';
+import 'package:psi/data/order_repo.dart';
 import 'package:psi/data/product_repo.dart';
 import 'package:psi/models/measurement_units.dart';
+import 'package:psi/models/order.dart';
 import 'package:psi/models/product.dart';
 import 'package:psi/screens/add_product.dart';
 import 'package:psi/screens/cart_screen.dart';
@@ -17,7 +19,10 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(ProductAdapter());
   Hive.registerAdapter(MeasurementUnitAdapter());
+  Hive.registerAdapter(OrderAdapter());
   await Hive.openBox<Product>(ProductRepository.productBox);
+  await Hive.openBox<Order>(OrderRepository.orderBox);
+
   runApp(MyApp());
 }
 
@@ -30,7 +35,7 @@ class MyApp extends StatelessWidget {
           create: (BuildContext context) => ProductCubit(ProductRepository()),
         ),
         BlocProvider<CartCubit>(
-          create: (BuildContext context) => CartCubit(ProductRepository()),
+          create: (BuildContext context) => CartCubit(ProductRepository(), OrderRepository()),
         ),
       ],
       child: MaterialApp(
