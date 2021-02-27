@@ -17,7 +17,8 @@ class CartEmpty extends CartState{
 
 class CartLoaded extends CartState {
   final List<Product> products;
-  const CartLoaded(this.products);
+  final double billingAmount;
+  const CartLoaded(this.products, this.billingAmount);
 }
 
 class OrderPlaced extends CartState{

@@ -34,7 +34,7 @@ class _CartScreenState extends State<CartScreen> {
       },
       builder: (context, state) {
         if (state is CartLoaded) {
-          return _buildLoadedView(state.products);
+          return _buildLoadedView(state.products, state.billingAmount);
         } else if (state is CartLoading) {
           return _buildLoadingView();
         } else if (state is CartEmpty) {
@@ -58,30 +58,51 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget _buildLoadedView(List<Product> products) {
+  Widget _buildLoadedView(List<Product> products, double billingAmount) {
     return Column(
       children: [
         Expanded(
           child: ListView.separated(
             itemCount: products.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                leading: CircleAvatar(
-                    child: Image.network(products[index].imageUrl)),
-                title: Text(products[index].productName),
-                subtitle: Text(
-                    '₹ ${products[index].price}/${products[index].unitName}'),
-                trailing: _buildAddToCardView(products[index]),
-              );
+              return _buildCartItem(products[index]);
             },
             separatorBuilder: (context, index) {
               return Divider();
             },
           ),
         ),
+        _buildFinalAmountView(billingAmount),
         _buildPlaceOrderView(),
       ],
     );
+  }
+
+  Widget _buildFinalAmountView(double billingAmount){
+    return Container(
+      width: double.infinity,
+      height: 30,
+      color: Colors.green,
+      child:Center(child: Text("Final amount => $billingAmount", style:TextStyle(color: Colors.white))),
+    );
+  }
+
+  Widget _buildCartItem(Product product) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        CircleAvatar(child: Image.network(product.imageUrl)),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(product.productName),
+            Text('₹ ${product.price}/${product.unitName}'),
+          ],
+        ),
+        _buildAddToCardView(product),
+      ],
+    );
+
   }
 
   Widget _buildPlaceOrderView() {
@@ -99,39 +120,45 @@ class _CartScreenState extends State<CartScreen> {
   Widget _buildAddToCardView(Product p) {
     print('qty of ${p.productName} => ${p.qty}');
     if (p.qty > 0) {
-      return Container(
-        width: 200,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            TextButton(
-              onPressed: () {
-                removeFromCart(p);
-              },
-              child: Text("-"),
-              style: TextButton.styleFrom(
-                primary: Colors.white,
-                backgroundColor: Colors.pink,
-                onSurface: Colors.grey,
-              ),
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Container(
+            width: 200,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    removeFromCart(p);
+                  },
+                  child: Text("-"),
+                  style: TextButton.styleFrom(
+                    primary: Colors.white,
+                    backgroundColor: Colors.pink,
+                    onSurface: Colors.grey,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('${p.qty}'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    addToCart(p);
+                  },
+                  child: Text("+"),
+                  style: TextButton.styleFrom(
+                    primary: Colors.white,
+                    backgroundColor: Colors.pink,
+                    onSurface: Colors.grey,
+                  ),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('${p.qty}'),
-            ),
-            TextButton(
-              onPressed: () {
-                addToCart(p);
-              },
-              child: Text("+"),
-              style: TextButton.styleFrom(
-                primary: Colors.white,
-                backgroundColor: Colors.pink,
-                onSurface: Colors.grey,
-              ),
-            ),
-          ],
-        ),
+          ),
+          Text('subtotal=> ${p.price * p.qty}'),
+        ],
       );
     } else {
       return ElevatedButton(

@@ -19,7 +19,17 @@ class CartCubit extends Cubit<CartState> {
     emit(CartLoading());
     List<Product> pList = await productRepository.getProducts();
     List<Product> cartItems = pList.where((p) => p.qty > 0).toList();
-    emit(CartLoaded(cartItems));
+
+    emit(CartLoaded(cartItems, _getCartBilling(cartItems)));
+  }
+
+  double _getCartBilling(List<Product> cartItems) {
+    double total = 0;
+    cartItems.forEach((element) {
+      total = total + (element.price * element.qty);
+    });
+
+    return total;
   }
 
   void updateQuantity(Product p) async {
@@ -27,7 +37,7 @@ class CartCubit extends Cubit<CartState> {
     List<Product> pList = await productRepository.getProducts();
     List<Product> cartItems = pList.where((p) => p.qty > 0).toList();
     if (cartItems.length > 0) {
-      emit(CartLoaded(cartItems));
+      emit(CartLoaded(cartItems, _getCartBilling(cartItems)));
     } else {
       emit(CartEmpty());
     }
@@ -37,7 +47,7 @@ class CartCubit extends Cubit<CartState> {
     // save the order
     List<Product> pList = await productRepository.getProducts();
     List<Product> cartItems = pList.where((p) => p.qty > 0).toList();
-    await orderRepository.saveOrder(Order(cartItems));    
+    await orderRepository.saveOrder(Order(cartItems));
     productRepository.clearCart();
     emit(OrderPlaced());
   }
