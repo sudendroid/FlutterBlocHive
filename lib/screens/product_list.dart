@@ -110,7 +110,6 @@ class _ProductListState extends State<ProductList> {
   }
 
   Widget _buildAddToCardView(Product p) {
-    print('qty of ${p.productName} => ${p.qty}');
     if (p.qty > 0) {
       return Container(
         width: 200,
@@ -181,14 +180,7 @@ class _ProductListState extends State<ProductList> {
             child: ListView.separated(
               itemCount: products.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  leading: CircleAvatar(
-                      child: Image.network(products[index].imageUrl)),
-                  title: Text(products[index].productName),
-                  subtitle: Text(
-                      '₹ ${products[index].price}/${products[index].unitName}'),
-                  trailing: _buildAddToCardView(products[index]),
-                );
+                return _buildProductCard(products[index]);
               },
               separatorBuilder: (context, index) {
                 return Divider();
@@ -201,6 +193,16 @@ class _ProductListState extends State<ProductList> {
     } else {
       return _buildInitialView();
     }
+  }
+
+  Widget _buildProductCard(Product product) {    
+    print('qty of ${product.productName} => ${product.qty}');
+    return ListTile(
+      leading: CircleAvatar(child: Image.network(product.imageUrl)),
+      title: Text(product.productName),
+      subtitle: Text('₹ ${product.price}/${product.unitName}'),
+      trailing: _buildAddToCardView(product),
+    );
   }
 
   void fetchProducts() {
@@ -216,5 +218,4 @@ class _ProductListState extends State<ProductList> {
     product.qty = product.qty - 1;
     BlocProvider.of<ProductCubit>(context).updateQuantity(product);
   }
-
 }
