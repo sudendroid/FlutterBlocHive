@@ -15,6 +15,7 @@ import 'package:psi/screens/cart_screen.dart';
 import 'package:psi/screens/my_orders.dart';
 import 'package:psi/screens/product_list.dart';
 import 'package:psi/screens/splash.dart';
+import 'package:psi/screens/thank_you.dart';
 
 void main() async {
   // Directory appDocDir = await getApplicationDocumentsDirectory();
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
           AddProduct.ROUTE: (context) => AddProduct(),
           CartScreen.ROUTE: (context) => CartScreen(),
           MyOrders.ROUTE: (context) => MyOrders(),
+          ThankYouScreen.ROUTE: (context) => ThankYouScreen(),
         },
       ),
     );

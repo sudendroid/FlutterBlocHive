@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:psi/cubit/cart_cubit.dart';
 import 'package:psi/models/product.dart';
+import 'package:psi/screens/thank_you.dart';
 
 class CartScreen extends StatefulWidget {
   static const ROUTE = '/cart';
@@ -175,22 +176,24 @@ class _CartScreenState extends State<CartScreen> {
     //   content: Text("Thank you for placing order"),
     // ));
 
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: Text("Thank you for placing order!"),
-            actions: [
-              ElevatedButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop(true);
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          );
-        });
+    // showDialog(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return AlertDialog(
+    //         content: Text("Thank you for placing order!"),
+    //         actions: [
+    //           ElevatedButton(
+    //             child: const Text('OK'),
+    //             onPressed: () {
+    //               Navigator.of(context).pop(true);
+    //               Navigator.pop(context);
+    //             },
+    //           ),
+    //         ],
+    //       );
+    //     });
+
+    Navigator.popAndPushNamed(context, ThankYouScreen.ROUTE);
   }
 
   void fetchCartItems() {
